@@ -28,17 +28,17 @@ function onSearchFormSubmit(event) {
     currentPage = 1;
     totalHits = 0;
 
-    if (searchQuery === '') {
-        galleryEl.innerHTML = '';
-        event.target.reset();
-        iziToast.error({
-            title: 'Error',
-            message: 'Illegal operation',
-            position: 'topRight',
-            timeout: 2000,
-        });
-        return;
-    }
+        if (searchQuery === '') {
+            galleryEl.innerHTML = '';
+            event.target.reset();
+            iziToast.error({
+                title: 'Error',
+                message: 'Illegal operation',
+                position: 'topRight',
+                timeout: 2000,
+            });
+            return;
+        }
 
     galleryEl.innerHTML = '';
     loaderEl.classList.remove('hidden');
@@ -54,7 +54,8 @@ function onSearchFormSubmit(event) {
                     timeout: 2000,
                     color: 'red',
                 });
-            } else {
+            } 
+            else {
                 galleryEl.innerHTML = createMarkupItem(imagesData.hits);
                 lightbox.refresh();
                 if (imagesData.hits.length < totalHits) {
@@ -71,12 +72,19 @@ function onSearchFormSubmit(event) {
 
 function onLoadMoreBtnClick() {
     currentPage += 1;
+    loadMoreBtn.classList.add('hidden');
     loaderEl.classList.remove('hidden');
 
     fetchPhotosByQuery(searchQuery, currentPage)
         .then(imagesData => {
+            const { height: cardHeight } = galleryEl.firstElementChild.getBoundingClientRect();
             galleryEl.insertAdjacentHTML('beforeend', createMarkupItem(imagesData.hits));
             lightbox.refresh();
+
+            window.scrollBy({
+                top: cardHeight * 2,
+                behavior: 'smooth'
+            });
 
             if (galleryEl.children.length >= totalHits) {
                 loadMoreBtn.classList.add('hidden');
@@ -86,6 +94,8 @@ function onLoadMoreBtnClick() {
                     timeout: 2000,
                     color: 'blue',
                 });
+            } else {
+                loadMoreBtn.classList.remove('hidden');
             }
         })
         .catch(error => console.log(error))
