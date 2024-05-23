@@ -21,6 +21,8 @@ let searchQuery = '';
 let currentPage = 1;
 let totalHits = 0;
 
+searchFormEl.addEventListener('submit', onSearchFormSubmit);
+
 function onSearchFormSubmit(event) {
     event.preventDefault();
 
@@ -70,6 +72,8 @@ function onSearchFormSubmit(event) {
         });
 }
 
+loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
+
 function onLoadMoreBtnClick() {
     currentPage += 1;
     loadMoreBtn.classList.add('hidden');
@@ -104,5 +108,5 @@ function onLoadMoreBtnClick() {
         });
 }
 
-searchFormEl.addEventListener('submit', onSearchFormSubmit);
-loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
+
+
